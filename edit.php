@@ -1,5 +1,6 @@
 <?php
 
+$l = $_GET['ligne'];
 if ( isset($_POST['login']) && isset($_POST['password'])){
 
     $i = 1;
@@ -8,7 +9,7 @@ if ( isset($_POST['login']) && isset($_POST['password'])){
     
     while (($data = fgetcsv($handle,",")) !== FALSE) {
         $ligne_tmp = array();
-        if ($i !== $_GET['ligne']){
+        if ($i !== intval($_GET['ligne'])){
             $ligne_tmp[0] = $data[0];
             $ligne_tmp[1] = $data[1];
             $array_tmp[$i-1] = $ligne_tmp;
@@ -16,7 +17,6 @@ if ( isset($_POST['login']) && isset($_POST['password'])){
         $i++;
     }
     $array_tmp[] = array($_POST['login'], $_POST['password']);
-    var_dump($array_tmp);
 
     $handle = fopen('users.csv','w+');
     foreach ($array_tmp as $ligne){
@@ -33,7 +33,7 @@ if ( isset($_POST['login']) && isset($_POST['password'])){
     <title> Modifier </title>
 
     <body>
-        <form method='post' action='edit.php'>
+        <form method='post' action='edit.php?ligne=<?php echo $_GET['ligne']; ?>'>
             New login <input type="text" name="login"/> <br>
             New password <input type="password" name="password"/> <br>
             Enter it again <input type="passwordcheck" name="passwordcheck"/> <br>
